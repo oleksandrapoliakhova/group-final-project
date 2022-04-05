@@ -15,9 +15,9 @@
 </head>
 <body>
 <h3>
-    Median Sales Price of Houses Sold for the United States
+    Average Price Increase of Houses in the United States (Year to Year)
     </br>
-    Poliakhova Oleksandra
+    Owen Richardson
 </h3>
 <div id="my_dataviz"></div>
 <script>
@@ -36,12 +36,13 @@
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
+
     //Read the data
-    d3.csv("./Data/MSPUS.csv",
+    d3.csv("./Data/MSPUS_With_rates.csv",
 
         // When reading the csv, I must format variables:
         function (d) {
-            return {DATE: d3.timeParse("%Y-%m-%d")(d.DATE), MSPUS: d.MSPUS}
+            return {DATE: d3.timeParse("%Y-%m-%d")(d.DATE), MSPUS: d.MSPUS, RATE: d.RATE}
         },
 
         // Now I can use this dataset:
@@ -59,8 +60,8 @@
 
             // Add Y axis
             var y = d3.scaleLinear()
-                .domain([0, d3.max(data, function (d) {
-                    return +d.MSPUS;
+                .domain([-10, d3.max(data, function (d) {
+                    return +d.RATE;
                 })])
                 .range([height, 0]);
             svg.append("g")
@@ -77,7 +78,7 @@
                         return x(d.DATE)
                     })
                     .y(function (d) {
-                        return y(d.MSPUS)
+                        return y(+d.RATE)
                     })
                 )
         })
